@@ -33,7 +33,7 @@ def fetch_job_updates(self, username, password):
             if last_ind:
                 mail_id_list = [byte for byte in mail_id_list if int(byte) > last_ind]
             else:
-                mail_id_list = mail_id_list[-10:]
+                mail_id_list = mail_id_list[-100:]
 
             ink = int(mail_id_list[-1])
 
@@ -88,7 +88,7 @@ def fetch_job_updates(self, username, password):
 
             client = InferenceClient(
             "mistralai/Mistral-7B-Instruct-v0.3",
-            token="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",)
+            token="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",)
 
             preprompt1 = "Analyze the following email content and categorize it. Respond with one of these exact words: 'rejected' if the application was rejected 'moving forward' if the application is about applying a job 'applied'. Also return the job title. The sample format is look like 'applied' , 'software engineering intern'. If there is no job title return 'applied' , 'None'. No more than these two words, no need to explain why. Email content:"
             preprompt2 = "Analyze the following email text and determine if it's a response to a job application. Reply 'yes', if it is related to job application process, else 'no'. Reply 'no' also if this is about job alert."
@@ -127,7 +127,7 @@ def fetch_job_updates(self, username, password):
     User = get_user_model()
     user = User.objects.filter(username=username).first()
 
-    data, ink = getMessage(username, password, user.mail_id)
+    data, ink = getMessage(username, password, user.mail_id) #get msg from email
     status = fill_status(data)
 
     user.mail_id = ink  # Replace 'property_name' with the actual property you want to edit
